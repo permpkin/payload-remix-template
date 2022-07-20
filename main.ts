@@ -1,18 +1,19 @@
-const path = require("path");
-const express = require("express");
-const payload = require("payload");
-const compression = require("compression");
-const morgan = require("morgan");
-const { createRequestHandler } = require("@remix-run/express");
+import path from 'node:path';
+import express from 'express';
+import payload from 'payload';
+import morgan from 'morgan';
 
-const BUILD_DIR = path.join(process.cwd(), "build");
+import { createRequestHandler } from "@remix-run/express";
 
+// populate env variables from .env
 require('dotenv').config();
 
-const app = express();
+const BUILD_DIR = path.join(process.cwd(), "build");
+const PORT = process.env.PORT || 3000;
 
-console.log(">>>PAYLOAD_CONFIG_PATH", process.env.PAYLOAD_CONFIG_PATH)
+const App = express();
 
+// Initialize Payload
 payload.init({
   secret: process.env.PAYLOAD_SECRET || '',
   mongoURL: process.env.MONGODB_URL || '', // using realm for testing.
@@ -20,30 +21,30 @@ payload.init({
     user: process.env.MONGODB_USER || '',
     pass: process.env.MONGODB_PASS || ''
   },
-  express: app,
+  express: App,
   onInit: () => {
     payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`)
   },
 })
 
-app.use(compression());
-
 // http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header
-app.disable("x-powered-by");
+App.disable("x-powered-by");
 
 // Remix fingerprints its assets so we can cache forever.
-app.use(
+App.use(
   "/build",
   express.static("public/build", { immutable: true, maxAge: "1y" })
 );
 
 // Everything else (like favicon.ico) is cached for an hour. You may want to be
 // more aggressive with this caching.
-app.use(express.static("public", { maxAge: "1h" }));
+App.use(express.static("public", { maxAge: "1h" }));
 
-app.use(morgan("tiny"));
+// Move this line above the payload.init
+// line to log admin routes.
+App.use(morgan("tiny"));
 
-app.all(
+App.all(
   "*",
   process.env.NODE_ENV === "development"
     ? (req, res, next) => {
@@ -59,10 +60,9 @@ app.all(
         mode: process.env.NODE_ENV,
       })
 );
-const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-  console.log(`Express server listening on port ${port}`);
+App.listen(PORT, () => {
+  console.log(`Listening on :${PORT}`);
 });
 
 function purgeRequireCache() {
