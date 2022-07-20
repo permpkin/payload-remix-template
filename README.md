@@ -1,3 +1,13 @@
+# Remix + PayloadCMS Template
+Work in progress, just experimenting, serves payload at localhost:3000/admin, remix on all other routes.
+- suggest spinning up a free realm mongo host to use and create an .env file using below...
+```
+MONGODB_URL=
+MONGODB_USER=
+MONGODB_PASS=
+```
+user + pass must NOT be in the mongo url.
+
 # Welcome to Remix!
 
 - [Remix Docs](https://remix.run/docs)
