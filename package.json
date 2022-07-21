@@ -4,14 +4,14 @@
   "scripts": {
     "build": "remix build",
     "dev": "remix build && run-p \"dev:*\"",
-    "dev:node": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts NODE_ENV=development nodemon ./main.ts --watch ./main.ts",
+    "dev:node": "cross-env PAYLOAD_CONFIG_PATH=app/payload.config.ts NODE_ENV=development nodemon ./app/express.server.ts --watch ./app/express.server.ts",
     "dev:remix": "remix watch",
     "start": "cross-env NODE_ENV=production bun ./server.ts",
-    "build:payload": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload build",
+    "build:payload": "cross-env PAYLOAD_CONFIG_PATH=app/payload.config.ts payload build",
     "build:server": "tsc",
     "build:p-payload": "yarn build:payload && yarn build:server",
     "serve": "cross-env PAYLOAD_CONFIG_PATH=dist/payload.config.js NODE_ENV=production node dist/server.js",
-    "generate:types": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:types"
+    "generate:types": "cross-env PAYLOAD_CONFIG_PATH=app/payload.config.ts payload generate:types"
   },
   "dependencies": {
     "@remix-run/express": "^1.6.5",
