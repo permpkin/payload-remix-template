@@ -2,6 +2,7 @@ import path from 'node:path';
 import express from 'express';
 import payload from 'payload';
 import morgan from 'morgan';
+// import { resetScheduledJob } from './admin/cron/jobs';
 
 import { createRequestHandler } from "@remix-run/express";
 
@@ -61,8 +62,11 @@ App.all(
       })
 );
 
+// Seed database with startup data
+// resetScheduledJob.start();
+
 App.listen(PORT, () => {
-  console.log(`Listening on :${PORT}`);
+  payload.logger.info(`Remix URL ${payload.config.serverURL}`)
 });
 
 function purgeRequireCache() {
