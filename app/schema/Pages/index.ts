@@ -49,12 +49,6 @@ export const Pages: CollectionConfig = {
 			type: 'tabs',
 			tabs: [
 				{
-					label: 'Hero',
-					fields: [
-						hero,
-					],
-				},
-				{
 					label: 'Page Layout',
 					fields: [
 						{
@@ -64,37 +58,53 @@ export const Pages: CollectionConfig = {
 							minRows: 1,
 							localized: true,
 							blocks: [
-								Accordion,
+								// Accordion,
 								Content,
-								Form,
-								Media,
-								MediaContent,
-								MediaSlider,
+								// Form,
+								// Media,
+								// MediaContent,
+								// MediaSlider,
 							],
 						},
 					]
-				}
+				},
+				{
+					label: 'Meta',
+					fields: [
+						// hero,
+            {
+              name: 'description',
+              label: 'Description',
+              type: 'textarea',
+            },
+            {
+              name: 'keywords',
+              label: 'Keywords',
+              type: 'text',
+            },
+					],
+				},
 			]
 		},
-    {
-      name: 'fullTitle',
-      type: 'text',
-			localized: true,
-      hooks: {
-        beforeChange: [
-          // custom hook function to save the title using breadcrumbs field data
-          populateFullTitle,
-        ],
-      },
-      // to hide the field from the UI for the edit/create forms we can pass it a null value
-      admin: {
-        components: {
-          Field: () => null,
-        },
-        // to remove it completely from the admin using the hidden property instead
-        // hidden: true
-      },
-    },
+    // {
+    //   name: 'fullTitle',
+    //   type: 'text',
+		// 	localized: true,
+    //   hooks: {
+    //     beforeChange: [
+    //       // custom hook function to save the title using breadcrumbs field data
+    //       populateFullTitle,
+    //     ],
+    //   },
+    //   // to hide the field from the UI for the edit/create forms we can pass it a null value
+    //   admin: {
+    //     components: {
+    //       Field: () => null,
+    //     },
+    //     // to remove it completely from the admin using the hidden property instead
+    //     // hidden: true
+    //   },
+    // },
     {
       name: 'breadcrumbs',
       type: 'array',
@@ -135,6 +145,43 @@ export const Pages: CollectionConfig = {
 				disabled: true,
       },
     },
+    // {
+    //   name: 'image',
+    //   label: 'Featured Image',
+    //   type: 'upload',
+    //   relationTo: 'media',
+    // },
+    // {
+    //   name: 'meta',
+    //   label: 'Page Meta',
+    //   type: 'group',
+    //   fields: [
+    //     {
+    //       name: 'title',
+    //       label: 'Title',
+    //       type: 'text',
+    //     },
+    //     {
+    //       name: 'description',
+    //       label: 'Description',
+    //       type: 'textarea',
+    //     },
+    //     {
+    //       name: 'keywords',
+    //       label: 'Keywords',
+    //       type: 'text',
+    //     },
+    //   ],
+    // },
+    // {
+    //   name: 'layout',
+    //   label: 'Page Layout',
+    //   type: 'blocks',
+    //   minRows: 1,
+    //   blocks: [
+    //     Content
+    //   ],
+    // },
     // since configuration is in code we can call functions to define data structures dynamically in a reusable way
     slug(),
     {
@@ -149,23 +196,23 @@ export const Pages: CollectionConfig = {
         position: 'sidebar',
       },
     },
-    {
-      name: 'author',
-      relationTo: 'users',
-      type: 'relationship',
-      hooks: {
-        beforeChange: [
-          // By using a hook to set the author, admins cannot change the author as is allowed in the posts
-          // collections that has a defaultValue property to populates it and allow changing in the UI
-          populateAuthor,
-        ],
-      },
-      admin: {
-        // this is going to be filled by the hook, or will remain the same on edit
-        readOnly: true,
-        position: 'sidebar',
-      },
-    },
+    // {
+    //   name: 'author',
+    //   relationTo: 'users',
+    //   type: 'relationship',
+    //   hooks: {
+    //     beforeChange: [
+    //       // By using a hook to set the author, admins cannot change the author as is allowed in the posts
+    //       // collections that has a defaultValue property to populates it and allow changing in the UI
+    //       populateAuthor,
+    //     ],
+    //   },
+    //   admin: {
+    //     // this is going to be filled by the hook, or will remain the same on edit
+    //     readOnly: true,
+    //     position: 'sidebar',
+    //   },
+    // },
   ],
 };
 

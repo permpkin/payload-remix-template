@@ -6,12 +6,12 @@ const Media: CollectionConfig = {
   access: {
 
     // Payload's access control functions apply to files also, meaning you can permit or deny file downloads easily
-    read: () => true,
+    // read: () => true,
 
     // access is limited for demo purposes, remove to restore upload capability
-    create: () => false,
-    update: () => false,
-    delete: () => false,
+    // create: () => false,
+    // update: () => false,
+    // delete: () => false,
   },
   admin: {
     useAsTitle: 'filename',
@@ -26,7 +26,7 @@ const Media: CollectionConfig = {
     adminThumbnail: 'thumbnail',
 
     // staticDir tell Payload where to store files to and allows them to be served
-    staticDir: path.resolve(__dirname, '../../media'),
+    staticDir: path.resolve(__dirname, '../../uploads'),
 
     // limit the types of files allowed and request validation
     mimeTypes: ['image/png', 'image/jpeg'],

@@ -2,7 +2,6 @@ import path from 'node:path';
 import express from 'express';
 import payload from 'payload';
 import morgan from 'morgan';
-// import { resetScheduledJob } from './admin/cron/jobs';
 
 import { createRequestHandler } from "@remix-run/express";
 
@@ -17,11 +16,7 @@ const App = express();
 // Initialize Payload
 payload.init({
   secret: process.env.PAYLOAD_SECRET || '',
-  mongoURL: process.env.MONGODB_URL || '', // using realm for testing.
-  mongoOptions: {
-    user: process.env.MONGODB_USER || '',
-    pass: process.env.MONGODB_PASS || ''
-  },
+  mongoURL: process.env.MONGODB_URL || '',
   express: App,
   onInit: () => {
     payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`)
@@ -54,16 +49,25 @@ App.all(
         return createRequestHandler({
           build: require(BUILD_DIR),
           mode: process.env.NODE_ENV,
+          getLoadContext(req, res) {
+            return {
+              // @ts-ignore
+              payload: req.payload
+            };
+          },
         })(req, res, next);
       }
     : createRequestHandler({
         build: require(BUILD_DIR),
         mode: process.env.NODE_ENV,
+        getLoadContext(req, res) {
+          return {
+            // @ts-ignore
+            payload: req.payload
+          };
+        },
       })
 );
-
-// Seed database with startup data
-// resetScheduledJob.start();
 
 App.listen(PORT, () => {
   payload.logger.info(`Remix URL ${payload.config.serverURL}`)

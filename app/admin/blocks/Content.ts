@@ -91,12 +91,12 @@ export const Content: Block = {
             ],
           },
         ),
-        linkGroup({
-          overrides: {
-            maxRows: 10,
-          },
-          appearances: false,
-        }),
+        // linkGroup({
+        //   overrides: {
+        //     maxRows: 10,
+        //   },
+        //   appearances: false,
+        // }),
       ],
     },
   ],

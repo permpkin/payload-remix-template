@@ -56,6 +56,7 @@ const VideoButton: React.FC<any> = ({ path }) => {
   const [renderModal, setRenderModal] = useState(false);
   const modalSlug = `${path}-add-video`;
 
+  // @ts-ignore
   const handleAddVideo = useCallback((_, { id, source }) => {
     insertVideo(editor, { id, source });
     closeAll();
@@ -96,7 +97,7 @@ const VideoButton: React.FC<any> = ({ path }) => {
               </Button>
             </header>
             <Form
-              onSubmit={handleAddVideo}
+              onSubmit={handleAddVideo as any}
               initialData={initialFormData}
             >
               <Select

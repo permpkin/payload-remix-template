@@ -5,27 +5,26 @@ import formBuilder from '@payloadcms/plugin-form-builder';
 import nestedDocs from '@payloadcms/plugin-nested-docs';
 import seo from '@payloadcms/plugin-seo';
 
-import Users from './collections/Users';
-import Categories from './collections/Categories';
-import Media from './collections/Media';
-import Posts from './collections/Posts';
-import Pages from './collections/Pages';
-import { Alerts } from './collections/Alerts';
+import Users from './schema/Users';
+import Categories from './schema/Categories';
+import Media from './schema/Media';
+import Posts from './schema/Posts';
+import Pages from './schema/Pages';
 import BeforeLogin from './admin/components/BeforeLogin';
 import BeforeDashboard from './admin/components/BeforeDashboard';
 import AfterDashboard from './admin/components/AfterDashboard';
 import MainMenu from './admin/globals/MainMenu';
 
 export default buildConfig({
-  serverURL: 'http://localhost:3000',
+  serverURL: process.env.SITE_URL,
   admin: {
 
     user: Users.slug,
 
     // override existing payload styles with custom look
-    css: path.resolve(__dirname, './styles/custom.scss'),
+    // css: path.resolve(__dirname, './styles/custom.scss'),
 
-    // custom components added to show demo info
+    // // custom components added to show demo info
 		components: {
 			beforeLogin: [
 				BeforeLogin,
@@ -42,12 +41,11 @@ export default buildConfig({
 
   // collections in Payload are synonymous with database tables, models or entities from other frameworks and systems
   collections: [
-    Categories,
-		Media,
-    Posts,
+    // Categories,
+		// Media,
+    // Posts,
     Pages,
-    Users,
-    Alerts,
+    Users
   ],
 
   // globals are a single-instance collection, often used for navigation or site settings that live in one place
@@ -71,10 +69,10 @@ export default buildConfig({
   // graphQL: false
 
   plugins: [
-    formBuilder({
-			redirectRelationships: ['pages', 'posts'],
-		}),
-		// @ts-ignore
+    // formBuilder({
+		// 	redirectRelationships: ['pages', 'posts'],
+		// }),
+		// // @ts-ignore
     nestedDocs({
       collections: ['pages'],
       parentFieldSlug: 'parent',
@@ -82,12 +80,14 @@ export default buildConfig({
       generateLabel: (_, doc) => doc.title as string,
       generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
     }),
-    seo({
-      collections: [
-        'pages',
-        'posts',
-      ],
-    }),
+    // seo({
+    //   collections: [
+    //     'pages',
+    //     'posts',
+    //   ],
+    //   // @ts-ignore
+    //   generateURL: ({ doc, locale }) => `/${doc?.slug?.value}`
+    // }),
   ],
 
 	localization: {
