@@ -1,18 +1,22 @@
 interface Props {
-  data: Block[]
+  layout: Block[]
 }
 interface Block {
-  type: string
-  context: any
+  columns: any[]
+  id: string
+  blockName: string
+  blockType: string
 }
-export const BlockRenderer = ({ data }:Props) => {
+
+export const BlockRenderer = ({ layout }:Props) => {
   return (
     <div>
       {
-        data.map((block, index) => (
+        layout.map((block, index) => (
           <div key={`block-${index}`}>
             <div className='w-full p-5 border-b'>
-              <h1>{block.type}</h1>
+              <h1>{block.blockName}</h1>
+              <h1>{block.blockType}</h1>
             </div>
           </div>
         ))

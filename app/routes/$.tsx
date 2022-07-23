@@ -25,7 +25,6 @@ export const loader: LoaderFunction = async ({ context: { payload }, params }) =
 };
 
 export const meta: MetaFunction = ({ data }) => {
-  // console.log('args', args)
   return {
     title: data.page.title,
     description: data.page.description,
@@ -42,12 +41,11 @@ export default function PageRenderer() {
   const { page } = useLoaderData<LoaderData>();
   
   return (
-    <main className="relative">
-      <h1>Page Renderer</h1>
-      {/* <BlockRenderer data={page.blocks}/> */}
-      <BlockRenderer data={[]}/>
+    <main className="relative" role="document">
+      <BlockRenderer layout={page.layout as any}/>
     </main>
   );
+
 }
 
 export function CatchBoundary() {
