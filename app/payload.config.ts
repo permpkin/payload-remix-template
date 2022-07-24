@@ -14,9 +14,13 @@ import BeforeLogin from './admin/components/BeforeLogin';
 import BeforeDashboard from './admin/components/BeforeDashboard';
 import AfterDashboard from './admin/components/AfterDashboard';
 import MainMenu from './admin/globals/MainMenu';
+import Test from './admin/components/Test';
+import { BrandLogo } from './components/BrandLogo';
+import Settings from './admin/globals/Settings';
+import config from './env.config'
 
 export default buildConfig({
-  serverURL: process.env.SITE_URL,
+  serverURL: config.SITE_URL,
   admin: {
 
     user: Users.slug,
@@ -26,6 +30,9 @@ export default buildConfig({
 
     // // custom components added to show demo info
 		components: {
+      beforeNavLinks: [
+        // Test
+      ],
 			beforeLogin: [
 				BeforeLogin,
 			],
@@ -35,6 +42,9 @@ export default buildConfig({
       afterDashboard: [
         AfterDashboard,
       ],
+      graphics: {
+        Icon: BrandLogo
+      }
 		},
 
   },
@@ -51,6 +61,7 @@ export default buildConfig({
   // globals are a single-instance collection, often used for navigation or site settings that live in one place
 	globals: [
 		MainMenu,
+    Settings
 	],
 
   // rateLimits provide basic API DDOS (Denial-of-service) protection and can limit accidental server load from scripts
@@ -69,25 +80,29 @@ export default buildConfig({
   // graphQL: false
 
   plugins: [
-    // formBuilder({
-		// 	redirectRelationships: ['pages', 'posts'],
-		// }),
-		// // @ts-ignore
+    formBuilder({
+			redirectRelationships: ['pages'],
+		}),
+		// @ts-ignore
     nestedDocs({
-      collections: ['pages'],
+      collections: [
+        'pages'
+      ],
       parentFieldSlug: 'parent',
       breadcrumbsFieldSlug: 'breadcrumbs',
       generateLabel: (_, doc) => doc.title as string,
       generateURL: (docs) => docs.reduce((url, doc) => `${url}/${doc.slug}`, ''),
     }),
-    // seo({
-    //   collections: [
-    //     'pages',
-    //     'posts',
-    //   ],
-    //   // @ts-ignore
-    //   generateURL: ({ doc, locale }) => `/${doc?.slug?.value}`
-    // }),
+    seo({
+      collections: [
+        'pages',
+        // 'posts',
+      ],
+      // @ts-ignore
+      generateURL: ({ doc: { fields } }) => {
+        return `${config.SITE_URL}${fields[`breadcrumbs.${fields.breadcrumbs.value - 1}.url`].value}`
+      }
+    }),
   ],
 
 	localization: {

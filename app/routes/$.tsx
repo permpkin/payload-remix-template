@@ -13,25 +13,48 @@ export const loader: LoaderFunction = async ({ context: { payload }, params }) =
   // query pages using the matching param.
   const pageQuery = await payload.find({
     collection: 'pages',
+    limit: 1,
+    where: {
+      and: [
+        {
+          url: {
+            equals: `/${params['*'] || ''}`
+          }
+        },
+        {
+          status: {
+            equals: 'published'
+          }
+        }
+      ]
+    }
   });
 
+  const page = pageQuery.docs.length != 0 ? pageQuery.docs[0] : false
+
   // Throw a 404 if there were no matches.
-  if (!pageQuery.docs[0]) {
+  if (!page) {
     throw new Response("Not Found", { status: 404 });
   }
-
-  return json<LoaderData>({ page: pageQuery.docs[0] });
+  
+  return json<LoaderData>({ page });
 
 };
 
 export const meta: MetaFunction = ({ data }) => {
+  // if no data, return defaults 
+  if (!data) {
+    return {
+      // TODO: grab defaults from globals
+    }
+  }
   return {
-    title: data.page.title,
-    description: data.page.description,
-    keywords: data.page.keywords,
+    title: data.page?.title,
+    description: data.page?.description,
+    keywords: data.page?.keywords,
     viewport: 'width=device-width, initial-scale=1',
-    'og:title': data.page.title,
-    'og:description': data.page.description,
+    'og:title': data.page?.title,
+    'og:description': data.page?.description,
     'og:image': data.page?.image || 'default-image'
   }
 }

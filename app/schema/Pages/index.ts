@@ -1,33 +1,33 @@
 import { CollectionConfig } from 'payload/types';
 import slug from '../../admin/fields/slug';
 import { Content } from '../../admin/blocks/Content';
-import { Media } from '../../admin/blocks/Media';
-import { Form } from '../../admin/blocks/Form';
-import MediaContent from '../../admin/blocks/MediaContent';
-import populateFullTitle from './hooks/populateFullTitle';
-import MediaSlider from '../../admin/blocks/MediaSlider';
-import { Accordion } from '../../admin/blocks/Accordion';
-import { populateAuthor } from './hooks/populateAuthor';
-import { hero } from '../../admin/fields/hero';
+// import { Media } from '../../admin/blocks/Media';
+// import { Form } from '../../admin/blocks/Form';
+// import MediaContent from '../../admin/blocks/MediaContent';
+// import populateFullTitle from './hooks/populateFullTitle';
+// import MediaSlider from '../../admin/blocks/MediaSlider';
+// import { Accordion } from '../../admin/blocks/Accordion';
+// import { populateAuthor } from './hooks/populateAuthor';
+// import { hero } from '../../admin/fields/hero';
 
 export const Pages: CollectionConfig = {
   // the slug is used for naming the collection in the database and the APIs that are open. For example: api/pages/${id}
   slug: 'pages',
   admin: {
     // this is the name of a field which will be visible for the edit screen and is also used for relationship fields
-    useAsTitle: 'fullTitle',
+    useAsTitle: 'title',
     // defaultColumns is used on the listing screen in the admin UI for the collection
     defaultColumns: [
-      'fullTitle',
-      'author',
+      'title',
       'createdAt',
       'status',
+      'slug'
     ],
   },
   // the access is set to allow read for anyone
   access: {
     // allow guest users to fetch pages
-    read: () => true,
+    // read: () => true,
     // The access for the remaining options use the default which prevents all guest access and is allowed for authenticated users
     // create,
     // update,
@@ -39,17 +39,37 @@ export const Pages: CollectionConfig = {
 	},
   fields: [
     {
+      name: 'isRoot',
+      label: 'Is Home',
+      type: 'checkbox',
+      admin: {
+        // @ts-ignore
+        condition: (_, { isRoot }) => isRoot !== true,
+        // readOnly: true,
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'title',
       label: 'Page Title',
       type: 'text',
       required: true,
 			localized: true,
     },
+    {
+      name: 'url',
+      label: 'Url Path',
+      type: 'text',
+			localized: true,
+      admin: {
+        hidden: true
+      }
+    },
 		{
 			type: 'tabs',
 			tabs: [
 				{
-					label: 'Page Layout',
+					label: 'Layout',
 					fields: [
 						{
 							name: 'layout',
@@ -142,8 +162,8 @@ export const Pages: CollectionConfig = {
         },
       ],
       admin: {
-				disabled: true,
-      },
+        hidden: true
+      }
     },
     // {
     //   name: 'image',
@@ -183,7 +203,7 @@ export const Pages: CollectionConfig = {
     //   ],
     // },
     // since configuration is in code we can call functions to define data structures dynamically in a reusable way
-    slug(),
+    slug('title'),
     {
       name: 'parent',
       label: 'Parent Page',
@@ -214,6 +234,26 @@ export const Pages: CollectionConfig = {
     //   },
     // },
   ],
+  hooks: {
+    beforeChange: [
+      async ({
+        data, // incoming data to update or create with
+        req, // full express request
+        operation, // name of the operation ie. 'create', 'update'
+        originalDoc, // original document
+      }) => {
+        switch (operation) {
+          case 'create': case 'update':
+          // TODO: update child routes (if any)
+          return {
+            ...data,
+            // apply updated url using breadcrumbs.
+            url: data.breadcrumbs[data.breadcrumbs.length - 1].url,
+          }; // Return data to either create or update a document with
+        }
+      }
+    ]
+  }
 };
 
 export default Pages;
