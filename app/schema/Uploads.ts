@@ -1,8 +1,8 @@
 import { CollectionConfig } from 'payload/types';
 import path from 'path';
 
-const Media: CollectionConfig = {
-  slug: 'media',
+const Uploads: CollectionConfig = {
+  slug: 'uploads',
   access: {
 
     // Payload's access control functions apply to files also, meaning you can permit or deny file downloads easily
@@ -15,7 +15,7 @@ const Media: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'filename',
-    description: 'Uploads are set to read-only for this demo.',
+    // description: 'Uploads are set to read-only for this demo.',
   },
 
   // file uploads are stored on the server by default, plugins are available for cloud storage
@@ -63,4 +63,4 @@ const Media: CollectionConfig = {
   ],
 };
 
-export default Media;
+export default Uploads;

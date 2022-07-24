@@ -7,7 +7,7 @@ import seo from '@payloadcms/plugin-seo';
 
 import Users from './schema/Users';
 import Categories from './schema/Categories';
-import Media from './schema/Media';
+import Uploads from './schema/Uploads';
 import Posts from './schema/Posts';
 import Pages from './schema/Pages';
 import BeforeLogin from './admin/components/BeforeLogin';
@@ -33,6 +33,7 @@ export default buildConfig({
       beforeNavLinks: [
         // Test
       ],
+      // Nav: Test,
 			beforeLogin: [
 				BeforeLogin,
 			],
@@ -52,9 +53,9 @@ export default buildConfig({
   // collections in Payload are synonymous with database tables, models or entities from other frameworks and systems
   collections: [
     // Categories,
-		// Media,
     // Posts,
     Pages,
+		Uploads,
     Users
   ],
 
@@ -82,6 +83,9 @@ export default buildConfig({
   plugins: [
     formBuilder({
 			redirectRelationships: ['pages'],
+      // formSubmissionOverrides: {
+      //   slug: 'entries'
+      // }
 		}),
 		// @ts-ignore
     nestedDocs({

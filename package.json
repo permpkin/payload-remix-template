@@ -4,9 +4,9 @@
   "scripts": {
     "build": "remix build",
     "dev": "API_URL=http://localhost:3000 remix build && run-p \"dev:*\"",
+    "dev:css": "tailwindcss -w -i ./app/style.css -o app/style.css",
     "dev:types": "cross-env PAYLOAD_CONFIG_PATH=app/payload.config.ts NODE_ENV=development payload generate:types",
     "dev:payload": "cross-env PAYLOAD_CONFIG_PATH=app/payload.config.ts NODE_ENV=development nodemon ./app/express.server.ts --watch ./app/express.server.ts",
-    "dev:css": "tailwindcss -w -i ./app/style.css -o app/style.css",
     "dev:remix": "remix watch",
     "build:payload": "cross-env PAYLOAD_CONFIG_PATH=app/payload.config.ts payload build",
     "build:css": "tailwindcss -m -i ./app/style.css -o app/style.css",
