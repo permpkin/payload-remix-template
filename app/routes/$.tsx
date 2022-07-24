@@ -52,7 +52,6 @@ export const meta: MetaFunction = ({ data }) => {
     title: data.page?.title,
     description: data.page?.description,
     keywords: data.page?.keywords,
-    viewport: 'width=device-width, initial-scale=1',
     'og:title': data.page?.title,
     'og:description': data.page?.description,
     'og:image': data.page?.image || 'default-image'
